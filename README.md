@@ -1,4 +1,4 @@
-# Elevator Simulation Console Application
+# DVT_Elevator_Challenge
 
 This is a console application written in C# that simulates the operation of elevators within a building. The application demonstrates concepts such as object-oriented programming (OOP), real-time processing, and algorithmic efficiency. The project includes multiple types of elevators, passenger handling, weight limits, and efficient dispatching algorithms.
 
