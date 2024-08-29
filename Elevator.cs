@@ -27,79 +27,118 @@ namespace DVT_Elevator_Challenge
         // Constructor to initialize the elevator with capacity, weight limit, and type
         public Elevator(int capacity, int weightLimit, ElevatorType type = ElevatorType.Standard)
         {
-            Capacity = capacity;
-            WeightLimit = weightLimit;
-            Type = type;
-            CurrentFloor = 0;                  // Start at the ground floor (floor 0)
-            MovementDirection = Direction.Idle; // Initially idle
-            IsMoving = false;                   // Not moving initially
-            PassengerCount = 0;                 // Start with no passengers
-            floorQueue = new Queue<int>();      // Initialize the queue for floor requests
+            try
+            {
+                Capacity = capacity;
+                WeightLimit = weightLimit;
+                Type = type;
+                CurrentFloor = 0;                  // Start at the ground floor (floor 0)
+                MovementDirection = Direction.Idle; // Initially idle
+                IsMoving = false;                   // Not moving initially
+                PassengerCount = 0;                 // Start with no passengers
+                floorQueue = new Queue<int>();      // Initialize the queue for floor requests
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error initializing elevator: {ex.Message}");
+            }
         }
 
         // Method to set the initial floor of the elevator, useful for testing or initialization
         public void SetInitialFloor(int floor)
         {
-            CurrentFloor = floor;
+            try
+            {
+                if (floor < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(floor), "Floor cannot be negative.");
+                }
+                CurrentFloor = floor;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error setting initial floor: {ex.Message}");
+            }
         }
 
         // Method to add passengers and a destination floor to the elevator
         public void AddPassenger(int destinationFloor, int passengerCount)
         {
-            // Check if adding the passengers would exceed the elevator's capacity or weight limit
-            if (PassengerCount + passengerCount <= Math.Min(Capacity, WeightLimit))
+            try
             {
-                floorQueue.Enqueue(destinationFloor);  // Add the destination floor to the queue
-                PassengerCount += passengerCount;      // Increase the passenger count
+                // Check if adding the passengers would exceed the elevator's capacity or weight limit
+                if (PassengerCount + passengerCount <= Math.Min(Capacity, WeightLimit))
+                {
+                    floorQueue.Enqueue(destinationFloor);  // Add the destination floor to the queue
+                    PassengerCount += passengerCount;      // Increase the passenger count
 
-                // If the elevator is idle, start moving to the next floor
-                if (MovementDirection == Direction.Idle)
+                    // If the elevator is idle, start moving to the next floor
+                    if (MovementDirection == Direction.Idle)
+                        MoveToNextFloor();
+                }
+                else
+                {
+                    // If the elevator cannot carry all the passengers due to weight limits, handle partial loading
+                    Console.WriteLine("Elevator cannot carry more passengers due to weight limits!");
+                    int availableSpace = Math.Min(Capacity, WeightLimit) - PassengerCount; // Calculate available space
+                    PassengerCount += availableSpace;    // Add as many passengers as possible
+                    floorQueue.Enqueue(destinationFloor); // Add the destination floor to the queue
+
+                    // Start moving to the next floor
                     MoveToNextFloor();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // If the elevator cannot carry all the passengers due to weight limits, handle partial loading
-                Console.WriteLine("Elevator cannot carry more passengers due to weight limits!");
-                int availableSpace = Math.Min(Capacity, WeightLimit) - PassengerCount; // Calculate available space
-                PassengerCount += availableSpace;    // Add as many passengers as possible
-                floorQueue.Enqueue(destinationFloor); // Add the destination floor to the queue
-
-                // Start moving to the next floor
-                MoveToNextFloor();
+                Console.WriteLine($"Error adding passengers: {ex.Message}");
             }
         }
 
         // Private method to move the elevator to the next floor in the queue
         private void MoveToNextFloor()
         {
-            // Check if there are floors in the queue
-            if (floorQueue.Count > 0)
+            try
             {
-                IsMoving = true;  // Set the elevator to moving
-                int nextFloor = floorQueue.Dequeue(); // Get the next floor to visit
+                // Check if there are floors in the queue
+                if (floorQueue.Count > 0)
+                {
+                    IsMoving = true;  // Set the elevator to moving
+                    int nextFloor = floorQueue.Dequeue(); // Get the next floor to visit
 
-                // Determine the direction of movement
-                MovementDirection = nextFloor > CurrentFloor ? Direction.Up : Direction.Down;
-                Console.WriteLine($"{Type} Elevator moving from floor {CurrentFloor} to floor {nextFloor}");
+                    // Determine the direction of movement
+                    MovementDirection = nextFloor > CurrentFloor ? Direction.Up : Direction.Down;
+                    Console.WriteLine($"{Type} Elevator moving from floor {CurrentFloor} to floor {nextFloor}");
 
-                // Move the elevator to the next floor
-                CurrentFloor = nextFloor;
+                    // Move the elevator to the next floor
+                    CurrentFloor = nextFloor;
 
-                // After reaching the destination, stop the elevator and set direction to idle
-                IsMoving = false;
-                MovementDirection = Direction.Idle;
-                Console.WriteLine($"{Type} Elevator arrived at floor {CurrentFloor}.");
+                    // After reaching the destination, stop the elevator and set direction to idle
+                    IsMoving = false;
+                    MovementDirection = Direction.Idle;
+                    Console.WriteLine($"{Type} Elevator arrived at floor {CurrentFloor}.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error moving to the next floor: {ex.Message}");
             }
         }
 
         // Method to display the current status of the elevator
         public void ShowStatus()
         {
-            Console.WriteLine($"{Type} Elevator Status: Current Floor - {CurrentFloor}, " +
-                              $"Direction - {MovementDirection}, " +
-                              $"Passengers - {PassengerCount}/{Capacity}, " +
-                              $"Weight Limit - {WeightLimit}, " +
-                              $"Moving - {IsMoving}");
+            try
+            {
+                Console.WriteLine($"{Type} Elevator Status: Current Floor - {CurrentFloor}, " +
+                                  $"Direction - {MovementDirection}, " +
+                                  $"Passengers - {PassengerCount}/{Capacity}, " +
+                                  $"Weight Limit - {WeightLimit}, " +
+                                  $"Moving - {IsMoving}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error displaying status: {ex.Message}");
+            }
         }
     }
 }
