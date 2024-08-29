@@ -38,3 +38,6 @@ This is a console application written in C# that simulates the operation of elev
    ```bash
    git clone https://github.com/Kamogelo-S-Kgari/DVT_Elevator_Challenge.git
    cd DVT_Elevator_Challenge
+
+2. **Add the existing Project**:
+   To Add the Existing project right click DVT_Elevator_Challenge .sln and Hover to Add Existing Project then Open TestElevator 📂 then select TestElevator.csproj
