@@ -30,7 +30,8 @@ This is a console application written in C# that simulates the operation of elev
 ### Prerequisites
 
 - .NET SDK (version 6.0 or later)
-- An IDE such as Visual Studio or Visual Studio Code
+- An IDE such as Visual Studio or Visual Studio Code.
+- TargetFramework net8.0 for both projects 
 
 ### Installation
 
@@ -41,3 +42,8 @@ This is a console application written in C# that simulates the operation of elev
 
 2. **Add the existing Project**:
    To Add the Existing project right click DVT_Elevator_Challenge .sln and Hover to Add Existing Project then Open TestElevator 📂 then select TestElevator.csproj
+
+
+3. **Install**:
+   - Install the xUnit and xUnit.runner.visualstudio NuGet packages if they are not already installed.
+   
